@@ -36,12 +36,12 @@ def pack_msg():
     global timeClientsend
     global timeClientsend_frac
     leapVersionMode = b'\x23'               #leep+verion+mode   =   1 byte
-    stratum = b'\x00'                       #stratum            =   1 byte
-    poll = b'\x06'                          #poll               =   1 byte
-    precision = b'\xFA'                     #precision          =   1 byte
-    rootDelay = b'\x00\x00\x00\x00'         #rootDelay          =   4 bytes
-    rootDispersion = 4* b'\x00'             #rootDispersion     =   4 bytes
-    referenceID = 4 * b'\x00'               #referenceID        =   4 bytes
+    stratum         = b'\x00'                       #stratum            =   1 byte
+    poll            = b'\x06'                          #poll               =   1 byte
+    precision       = b'\xFA'                     #precision          =   1 byte
+    rootDelay       = b'\x00\x00\x00\x00'         #rootDelay          =   4 bytes
+    rootDispersion  = 4* b'\x00'             #rootDispersion     =   4 bytes
+    referenceID     = 4 * b'\x00'               #referenceID        =   4 bytes
     referenceTimestamp = 8* b'\x00'         #referenceTimestamp =   8 bytes     
     originateTimestamp = ntp_timestamp()    #originateTimestamp =   8 bytes  
     receiveTimestamp = 8* b'\x00'           #receiveTimestamp   =   8 bytes
@@ -111,7 +111,7 @@ def offset():
 
     print_time()
     offsetCalc =((timeServerRecive - timeClientsend) + (timeServerTransmit - timeClientRecive))
-    return offsetCalc/1000000000
+    return offsetCalc
 
 def delay():
     
@@ -120,7 +120,7 @@ def delay():
     global timeServerRecive
     global timeServerTransmit
     delayCalc = ((timeClientRecive - timeClientsend) - (timeServerTransmit - timeServerRecive))
-    return delayCalc/1000000000
+    return delayCalc
 
 def main():
     print("Digite o IP do servidor NTP: ");
