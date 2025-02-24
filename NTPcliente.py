@@ -123,7 +123,7 @@ def delay():
     return delayCalc
 
 def main():
-    print("Digite o IP do servidor NTP: ");
+    print("Digite o IP do servidor NTP:");
     ntpip = input()
     send_msg(ntpip)
    
