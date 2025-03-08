@@ -18,7 +18,7 @@ Este projeto implementa um servidor e um cliente NTP (Network Time Protocol) par
 
 1. Navegue até o diretório do projeto:
     ```sh
-    cd /home/arthur_angelo/Redes/NTP-client-server
+    cd /home/seu_usuario/Redes/NTP-client-server
     ```
 
 2. Execute o servidor:
@@ -30,7 +30,7 @@ Este projeto implementa um servidor e um cliente NTP (Network Time Protocol) par
 
 1. Navegue até o diretório do projeto:
     ```sh
-    cd /home/arthur_angelo/Redes/NTP-client-server
+    cd /home/seu_usuario/Redes/NTP-client-server
     ```
 
 2. Execute o cliente:
@@ -67,16 +67,16 @@ Este projeto implementa um servidor e um cliente NTP (Network Time Protocol) par
 ## Exemplo de Saída
 
 ```
-Digite o IP do servidor NTP (pressione Enter para usar o servidor oficial do NTP.br): 
-Servidor: Timestamp NTP: 3950382630 segundos e 4020537344 fração
-Servidor: Tempo Unix: 1741393830 segundos
-Servidor: Tempo UTC: Fri Mar  7 21:30:30 2025
-timeClientRecive:  3950382630.936173
-timeClientsend  :  3950382630.9358034
-timeServerRecivce:  3950382630.936103
-timeServerTransmit :  3950382630.9361043
-Offset:0.0002307891845703125
-Delay:0.0003681182861328125
+Digite o IP do servidor NTP: 127.0.0.1
+Servidor: Timestamp NTP: 3950383399 segundos e 3654799360 fração
+Servidor: Tempo Unix: 1741394599 segundos
+Servidor: Tempo UTC: Fri Mar  7 21:43:19 2025
+timeClientRecive:  3950383399.8510275
+timeClientsend  :  3950383399.850495
+timeServerRecivce:  3950383399.8509455
+timeServerTransmit :  3950383399.8509493
+Offset:0.0001862049102783203
+Delay:0.0005288124084472656
 ```
 
 ## Contribuição
