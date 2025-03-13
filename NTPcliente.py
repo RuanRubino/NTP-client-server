@@ -8,7 +8,7 @@ import hashlib
 NTP_EPOCH_OFFSET = 2208988800
 
 # Parâmetros para autenticação 
-AUTH_KEY = b'poggers' # Chave pré-compartilhada
+AUTH_KEY = b'12345' # Chave pré-compartilhada
 KEY_ID = 1            # Identificador da chave
 
 # Criar socket UDP para comunicação 
@@ -40,23 +40,23 @@ def ntp_timestamp():
 
 def add_auth(msg):
     # Calcula o HMAC-SHA256 do pacote e anexa: 4 bytes do KEY_ID e 32 do digest
-    key_id_bytes = struct.pack("!I", KEY_ID)
+    #key_id_bytes = struct.pack("!I", KEY_ID)
     digest = hmac.new(AUTH_KEY, msg, hashlib.sha256,).digest()
-    return msg + key_id_bytes + digest
+    return msg + digest
 
 def verify_auth(data):
     # Verfica se os bytes do KEY_ID e do digest estão corretos.
 
-    if len(data) < 48 + 4 + 32:
+    if len(data) < 48 + 32:
         print('Mensagem sem autenticação completa...')
         return False
     msg = data[:48]
     key_id_recv = struct.unpack("!I", data[48:52])[0]
-    digest_recv = data[52:84]
+    digest_recv = data[48:80]
     
-    if key_id_recv != KEY_ID:
-        print("KEY ID inválido...")
-        return False
+    # if key_id_recv != KEY_ID:
+    #     print("KEY ID inválido...")
+    #     return False
 
     expected_digest = hmac.new(AUTH_KEY, msg, hashlib.sha256).digest()
     if expected_digest != digest_recv:
@@ -89,7 +89,7 @@ def pack_msg():
            rootDelay + rootDispersion + referenceID +
            referenceTimestamp + originateTimestamp +
            receiveTimestamp + transmitTimestamp)
-    #msg = add_auth(msg)
+    msg = add_auth(msg)
 
     return msg
 
@@ -97,9 +97,9 @@ def pack_msg():
 def unpack_msg(data):
 
     global NTP_EPOCH_OFFSET, timeServerRecive, timeServerTransmit
-    #if not verify_auth(data):
-     #   print("Falha na autenticação da resposta...")
-      #  return
+    if not verify_auth(data):
+        print("Falha na autenticação da resposta...")
+        return
     
     header = data[:48]
     unpacked = struct.unpack("!12I", header)
@@ -121,7 +121,7 @@ def send_msg(dest_ip):
     global timeClientRecive, timeClientRecive_frac
     # Envia o pacote NTP para o servidor e aguarda resposta
     # Registra o timestamp de recepção (T4) e chama unpack_msg() para processar a chamada
-    dest_port = 5000 # Porta de destino
+    dest_port = 123 # Porta de destino
     server_address = (dest_ip, dest_port)
 
     try:

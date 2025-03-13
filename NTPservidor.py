@@ -7,13 +7,13 @@ import hashlib
 NTP_EPOCH_OFFSET = 2208988800 
 
 # Parâmetros de autenticação 
-AUTH_KEY = b'poggers'
+AUTH_KEY = b'12345'
 KEY_ID = 1
 
 # Cria servidor UDP e vincula à porta 123 
 
 udp_server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address =  ('0.0.0.0', 5000)
+server_address =  ('0.0.0.0', 123)
 udp_server_socket.bind(server_address)
 
 def ntp_timestamp():
@@ -28,22 +28,22 @@ def add_auth(msg):
     # Calcula o HMAC-SHA256 do pacote e anexa: 4 bytes do KEY_ID e 32 do digest
     key_id_bytes = struct.pack("!I", KEY_ID)
     digest = hmac.new(AUTH_KEY, msg, hashlib.sha256,).digest()
-    return msg + key_id_bytes + digest
+    return msg + digest
 
 def verify_auth(data):
 
     # Verfica se os bytes do KEY_ID e do digest estão corretos.
-    if len(data) < 48 + 4 + 32:
+    if len(data) < 48 + 32:
         print('Mensagem sem autenticação completa...')
         return False
     
     msg = data[:48]
-    key_id_recv = struct.unpack("!I", data[48:52])[0]
-    digest_recv = data[52:84]
+    #key_id_recv = struct.unpack("!I", data[48:52])[0]
+    digest_recv = data[48:80]
     
-    if key_id_recv != KEY_ID:
+    '''if key_id_recv != KEY_ID:
         print("KEY ID inválido...")
-        return False
+        return False'''
 
     expected_digest = hmac.new(AUTH_KEY, msg, hashlib.sha256).digest()
     if expected_digest != digest_recv:
@@ -56,8 +56,8 @@ def process_request(data):
     
     # Processa requisição do cliente, verifica autenticação, extrai o originateTimestamp (T1) enviado pelo cliente
     if not verify_auth(data):
-        print("Erro na autenticação da requisição...")
-        return None
+       print("Erro na autenticação da requisição...")
+       return None
     
     header = data[:48]
     fields = struct.unpack("!12I", header)
